@@ -291,6 +291,24 @@ def fim():
     message = None
     if request.method == "POST":
         action = request.form.get("action", "")
+
+        # Safe demo actions: only write to this fixed project-local file.
+        demo_file = BASE_DIR / "fim_demo.txt"
+        if action == "create_demo":
+            demo_file.write_text("MiniCyberGuard FIM demo file - original content.\\n", encoding="utf-8")
+            message = "Demo file created. Add its path to the baseline: " + str(demo_file)
+            add_event("File Integrity", "INFO", "Demo file created", str(demo_file))
+            return render_template("fim.html", message=message, demo_path=str(demo_file))
+        elif action == "modify_demo":
+            if not demo_file.is_file():
+                flash("Create the demo file first.", "warning")
+            else:
+                with demo_file.open("a", encoding="utf-8") as f:
+                    f.write("Demo modification for FIM testing.\\n")
+                message = "Demo file modified. Check its path against the existing baseline: " + str(demo_file)
+                add_event("File Integrity", "INFO", "Demo file modified", str(demo_file))
+                return render_template("fim.html", message=message, demo_path=str(demo_file))
+
         raw_paths = request.form.get("paths", "").strip()
         paths = [Path(p.strip()).expanduser() for p in raw_paths.splitlines() if p.strip()]
         if not paths:
