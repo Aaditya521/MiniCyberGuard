@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}File Integrity · Mini CyberGuard{% endblock %}
+{% block content %}
+<div class="page-head"><p class="eyebrow">FILE MONITORING</p><h1>File Integrity Monitor</h1><p>Build a SHA-256 baseline for files, then compare later. Enter one path per line.</p></div>
+<form method="post" class="panel"><input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+<label for="paths">File paths</label><textarea id="paths" name="paths" rows="5" required placeholder="/etc/hosts&#10;/etc/hostname"></textarea>
+<div class="button-row"><button type="submit" name="action" value="baseline">Create baseline</button><button type="submit" class="secondary" name="action" value="check">Check against baseline</button></div>
+</form>
+{% if message %}<div class="flash success">{{ message }}</div>{% endif %}
+<div class="note">The baseline file is stored as <code>fim_baseline.json</code> in the project folder. Keep a trusted copy if you need tamper evidence.</div>
+{% endblock %}

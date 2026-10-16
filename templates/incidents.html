@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Incidents · Mini CyberGuard{% endblock %}
+{% block content %}
+<div class="page-head"><p class="eyebrow">RESPONSE</p><h1>Incident Tracker</h1><p>Record a security event for follow-up.</p></div>
+<form method="post" class="panel">
+<input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+<div class="form-grid"><div><label for="title">Incident title *</label><input id="title" name="title" maxlength="160" required placeholder="Repeated failed logins"></div>
+<div><label for="severity">Severity</label><select id="severity" name="severity"><option>LOW</option><option selected>MEDIUM</option><option>HIGH</option><option>CRITICAL</option></select></div>
+<div><label for="source_ip">Source IP (optional)</label><input id="source_ip" name="source_ip" placeholder="192.168.1.20"></div></div>
+<label for="notes">Notes</label><textarea id="notes" name="notes" rows="3" maxlength="2000" placeholder="What happened? What should be checked?"></textarea>
+<button type="submit">Add incident</button></form>
+<h2>Recent incidents</h2>
+{% if incidents %}<div class="table-wrap"><table><thead><tr><th>Created (UTC)</th><th>Title</th><th>Severity</th><th>Source IP</th><th>Status</th><th>Notes</th></tr></thead><tbody>
+{% for item in incidents %}<tr><td>{{ item.created_at }}</td><td>{{ item.title }}</td><td><span class="severity {{ item.severity|lower }}">{{ item.severity }}</span></td><td>{{ item.source_ip }}</td><td>{{ item.status }}</td><td>{{ item.notes }}</td></tr>{% endfor %}
+</tbody></table></div>{% else %}<p class="muted">No incidents recorded yet.</p>{% endif %}
+{% endblock %}

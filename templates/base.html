@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Mini CyberGuard{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="{{ url_for('index') }}">🛡️ Mini CyberGuard</a>
+  <nav>
+    <a href="{{ url_for('index') }}">Dashboard</a>
+    <a href="{{ url_for('logs') }}">Log Analyzer</a>
+    <a href="{{ url_for('incidents') }}">Incidents</a>
+    <a href="{{ url_for('scanner') }}">Port Scanner</a>
+    <a href="{{ url_for('url_checker') }}">URL Checker</a>
+    <a href="{{ url_for('fim') }}">File Integrity</a>
+    <a href="{{ url_for('events') }}">Event Log</a>
+  </nav>
+</header>
+<main class="container">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}{% for category, message in messages %}
+      <div class="flash {{ category }}">{{ message }}</div>
+    {% endfor %}{% endif %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</main>
+<footer>Mini CyberGuard · Local learning project · Use scanning only on systems you own or have permission to test.</footer>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}URL Checker · Mini CyberGuard{% endblock %}
+{% block content %}
+<div class="page-head"><p class="eyebrow">PHISHING AWARENESS</p><h1>URL Heuristic Checker</h1><p>Checks a few visible warning signs. It does not visit the URL or prove whether a site is safe.</p></div>
+<form method="post" class="panel"><input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+<label for="url">URL or domain</label><input id="url" name="url" value="{{ value }}" required placeholder="https://example.com/login">
+<button type="submit">Check URL</button></form>
+{% if findings %}<h2>Findings</h2><div class="findings">{% for item in findings %}<div class="finding"><span class="severity {{ item.severity|lower }}">{{ item.severity }}</span><span>{{ item.message }}</span></div>{% endfor %}</div>{% endif %}
+{% endblock %}

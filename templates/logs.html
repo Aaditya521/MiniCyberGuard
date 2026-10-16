@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Log Analyzer · Mini CyberGuard{% endblock %}
+{% block content %}
+<div class="page-head"><p class="eyebrow">DETECTION</p><h1>Log Analyzer</h1><p>Paste one event per line in the format shown below. Input stays on this local app.</p></div>
+<form method="post" class="panel">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <label for="log_text">Log lines</label>
+  <textarea id="log_text" name="log_text" rows="7" maxlength="20000" placeholder="2026-10-15T10:00:00Z LOGIN_FAILED user=admin ip=192.168.1.20&#10;2026-10-15T10:01:00Z LOGIN_SUCCESS user=aaditya ip=127.0.0.1">{{ raw_log }}</textarea>
+  <button type="submit">Analyze logs</button>
+</form>
+{% if results %}
+<h2>Analysis results</h2><div class="table-wrap"><table><thead><tr><th>Line</th><th>Time</th><th>Event</th><th>User</th><th>IP</th><th>Severity</th><th>Finding</th></tr></thead><tbody>
+{% for item in results %}<tr><td>{{ item.line }}</td><td>{{ item.time }}</td><td>{{ item.event }}</td><td>{{ item.user }}</td><td>{{ item.ip }}</td><td><span class="severity {{ item.severity|lower }}">{{ item.severity }}</span></td><td>{{ item.message }}</td></tr>{% endfor %}
+</tbody></table></div>{% endif %}
+<div class="note"><strong>Sample format</strong><code>2026-10-15T10:00:00Z LOGIN_FAILED user=admin ip=192.168.1.20</code></div>
+{% endblock %}

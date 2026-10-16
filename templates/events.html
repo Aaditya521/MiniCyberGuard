@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Event Log · Mini CyberGuard{% endblock %}
+{% block content %}
+<div class="page-head"><p class="eyebrow">AUDIT TRAIL</p><h1>Event Log</h1><p>Latest 200 events recorded by the app.</p></div>
+{% if events %}<div class="table-wrap"><table><thead><tr><th>Time (UTC)</th><th>Category</th><th>Severity</th><th>Title</th><th>Details</th></tr></thead><tbody>
+{% for event in events %}<tr><td>{{ event.created_at }}</td><td>{{ event.category }}</td><td><span class="severity {{ event.severity|lower }}">{{ event.severity }}</span></td><td>{{ event.title }}</td><td>{{ event.details }}</td></tr>{% endfor %}
+</tbody></table></div>{% else %}<p class="muted">No events recorded yet.</p>{% endif %}
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Port Scanner · Mini CyberGuard{% endblock %}
+{% block content %}
+<div class="page-head"><p class="eyebrow">NETWORK SECURITY</p><h1>Private IP Port Scanner</h1><p>Checks TCP connections to selected ports. Only private, loopback, or link-local IPs are accepted.</p></div>
+<form method="post" class="panel">
+<input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+<label for="target">Target IP</label><input id="target" name="target" required value="{{ target }}" placeholder="127.0.0.1">
+<label for="ports">Ports (comma-separated, maximum 30)</label><input id="ports" name="ports" value="22,80,443,5000" required>
+<button type="submit">Scan selected ports</button></form>
+{% if request.method == 'POST' %}<h2>Results</h2>{% if found %}<div class="table-wrap"><table><thead><tr><th>Port</th><th>Service guess</th><th>Status</th></tr></thead><tbody>{% for item in found %}<tr><td>{{ item.port }}</td><td>{{ item.service }}</td><td><span class="severity info">OPEN</span></td></tr>{% endfor %}</tbody></table></div>{% else %}<p class="muted">No open ports found among the selected ports, or the target did not respond.</p>{% endif %}{% endif %}
+<div class="note">Use only against systems you own or have explicit permission to test. This tool is intentionally limited to local/private address ranges.</div>
+{% endblock %}
